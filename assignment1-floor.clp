@@ -9,13 +9,24 @@
 )
 
 (deftemplate DTemperature
-    -20 20 degrees
+    -20 20 changeDegrees
     (
         (Low (5 1) (10 0))
         (Medium (5 0) (10 1) (15 0))
         (High (10 0) (15 1))
     )
 )
+
+;;Fuzzy Output set definition
+(deftemplate WhoPays
+    20 100 payer
+    (
+        (CP (65 1) (73 0))
+        (IP (65 0) (73 1) (80 0))
+        (SP (73 0) (80 1))
+    )
+)
+
 
 
 
@@ -30,89 +41,98 @@
     (assert (DTemperature (?b 0) (?b 1) (?b 0)))
 )
 
+;; defuzzify the outputs
+(defrule defuzzify1
+    ?f <- (WhoPays ?)
+    =>
+    (bind ?t (moment-defuzzify ?f))
+)
 
 
 
 
+
+
+;; FAM rule definition
 ;;Cold Temp Low Change
 (defrule CL
     (Temperature Cold)
     (DTemperature Low)
     =>
-    (assert (goodTemp no))
+    (assert (WhoPays CP))
+    (assert (GoodTemp no))
 )
 
 ;;Cold Temp Medium Change
-(defrule CL
+(defrule CM
     (Temperature Cold)
     (DTemperature Medium)
     =>
-    (assert (goodTemp no))
+    (assert (WhoPays CP))
+    (assert (GoodTemp no))
 )
 
 ;;Cold Temp High Change
-(defrule CL
+(defrule CH
     (Temperature Cold)
     (DTemperature High)
     =>
-    (assert (goodTemp no))
+    (assert (WhoPays CP))
+    (assert (GoodTemp no))
 )
 
-
-
-
-
-
 ;;Normal Temp Low Change
-(defrule CL
+(defrule NL
     (Temperature Normal)
     (DTemperature Low)
     =>
-    (assert (goodTemp yes))
+    (assert (WhoPays IP))
+    (assert (GoodTemp yes))
 )
 
 ;;Normal Temp Medium Change
-(defrule CL
+(defrule NM
     (Temperature Normal)
     (DTemperature Medium)
     =>
-    (assert (goodTemp yes))
+    (assert (WhoPays IP))
+    (assert (GoodTemp yes))
 )
 
 ;;Normal Temp High Change
-(defrule CL
+(defrule NH
     (Temperature Normal)
     (DTemperature High)
     =>
-    (assert (goodTemp no))
+    (assert (WhoPays IP))
+    (assert (GoodTemp yes))
 )
 
-
-
-
-
 ;;Hot Temp Low Change
-(defrule CL
+(defrule HL
     (Temperature Hot)
     (DTemperature Low)
         =>
-    (assert (goodTemp yes))
+    (assert (WhoPays SP))
+    (assert (GoodTemp yes))
 )
 
 ;;Hot Temp Medium Change
-(defrule CL
+(defrule HM
     (Temperature Hot)
     (DTemperature Medium)
     =>
-    (assert (goodTemp yes))
+    (assert (WhoPays SP))
+    (assert (GoodTemp yes))
 )
 
 ;;Hot Temp High Change
-(defrule CL
+(defrule HH
     (Temperature Hot)
     (DTemperature High)
     =>
-    (assert (goodTemp no))
+    (assert (WhoPays SP))
+    (assert (GoodTemp yes))
 )
 
 
@@ -120,15 +140,12 @@
 
 
 ;;Logic Tree
-(deffacts startup
-    (start))
-
 (defrule has-warranty 
-    ?x <- (start)
+    ?i <- (initial-fact)
     =>
     (printout t "Was the floor purchased less than 2 years ago? " crlf)
     (assert (warranty (read)))
-    (retract ?x)  
+    (retract ?i)  
 )
 
 ;;Warranty
@@ -181,11 +198,9 @@
 
     (printout t "Enter average night temperature:" crlf)
     (bind  ?response2(read))
-    (assert (nightTemp ?response2))
 
     (printout t "Enter average day temperature:" crlf)
     (bind  ?response3 (read))
-    (assert (dayTemp ?response3))
 
     ;;calculate average temperature and store in crispDTemperature
     (assert (crispDTemperature (- ?response3 ?response2))))
@@ -196,7 +211,7 @@
     (warranty yes)
     (acclimated yes)
     (stored yes)
-    (goodTemp no)
+    (GoodTemp no)
     =>
     (printout t "Customer Pays." crlf)
 )
@@ -205,7 +220,7 @@
     (warranty yes)
     (acclimated yes)
     (stored yes)
-    (goodTemp yes)
+    (GoodTemp yes)
     =>
     (printout t "Is there a gap present in the floor or wall?" crlf)
     (assert (gap (read)))
@@ -216,7 +231,7 @@
     (warranty yes)
     (acclimated yes)
     (stored yes)
-    (goodTemp yes)
+    (GoodTemp yes)
     (gap no)
     =>
     (printout t "Installer Pays." crlf)
@@ -226,7 +241,7 @@
     (warranty yes)
     (acclimated yes)
     (stored yes)
-    (goodTemp yes)
+    (GoodTemp yes)
     (gap yes)
     =>
     (printout t "Are there between 0-4 units of moisture?" crlf)
@@ -238,7 +253,7 @@
     (warranty yes)
     (acclimated yes)
     (stored yes)
-    (goodTemp yes)
+    (GoodTemp yes)
     (gap yes)
     (moisture no)
     =>
@@ -249,7 +264,7 @@
     (warranty yes)
     (acclimated yes)
     (stored yes)
-    (goodTemp yes)
+    (GoodTemp yes)
     (gap yes)
     (moisture yes)
     =>
@@ -262,7 +277,7 @@
     (warranty yes)
     (acclimated yes)
     (stored yes)
-    (goodTemp yes)
+    (GoodTemp yes)
     (gap yes)
     (moisture yes)
     (underlay no)
@@ -274,7 +289,7 @@
     (warranty yes)
     (acclimated yes)
     (stored yes)
-    (goodTemp yes)
+    (GoodTemp yes)
     (gap yes)
     (moisture yes)
     (underlay yes)
