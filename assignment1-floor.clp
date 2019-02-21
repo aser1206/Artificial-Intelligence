@@ -158,21 +158,21 @@
 (defrule warranty-not-expired
     (warranty yes)
     =>
-    (printout t "Is the house acclimated?" crlf)
-    (assert (acclimated (read)))
+    (printout t "Is the floor in the house?" crlf)
+    (assert (inHouse (read)))
 )
 
-;;Acclimated
-(defrule is-not-acclimated
+;;inHouse
+(defrule is-not-inHouse
     (warranty yes)
-    (acclimated no)
+    (inHouse no)
     =>
     (printout t "Customer Pays." crlf)
 )
 
-(defrule is-acclimated
+(defrule is-inHouse
     (warranty yes)
-    (acclimated yes)
+    (inHouse yes)
     =>
     (printout t "Has the floor been stored for more than 72 hours?" crlf)
     (assert (stored (read)))
@@ -181,7 +181,7 @@
 ;;Stored
 (defrule is-stored
     (warranty yes)
-    (acclimated yes)
+    (inHouse yes)
     (stored no)
     =>
     (printout t "Customer Pays." crlf)
@@ -189,7 +189,7 @@
 
 (defrule is-not-stored
     (warranty yes)
-    (acclimated yes)
+    (inHouse yes)
     (stored yes)
     =>
     (printout t "Enter current temperature:" crlf)
@@ -209,7 +209,7 @@
 ;;Temperature (Fuzzy)
 (defrule temperature-bad
     (warranty yes)
-    (acclimated yes)
+    (inHouse yes)
     (stored yes)
     (GoodTemp no)
     =>
@@ -218,7 +218,7 @@
 
 (defrule temperature-good
     (warranty yes)
-    (acclimated yes)
+    (inHouse yes)
     (stored yes)
     (GoodTemp yes)
     =>
@@ -229,7 +229,7 @@
 ;;Gap
 (defrule is-not-gap
     (warranty yes)
-    (acclimated yes)
+    (inHouse yes)
     (stored yes)
     (GoodTemp yes)
     (gap no)
@@ -239,7 +239,7 @@
 
 (defrule is-gap
     (warranty yes)
-    (acclimated yes)
+    (inHouse yes)
     (stored yes)
     (GoodTemp yes)
     (gap yes)
@@ -251,7 +251,7 @@
 ;;Moisture
 (defrule is-moisture
     (warranty yes)
-    (acclimated yes)
+    (inHouse yes)
     (stored yes)
     (GoodTemp yes)
     (gap yes)
@@ -262,7 +262,7 @@
 
 (defrule is-not-moisture
     (warranty yes)
-    (acclimated yes)
+    (inHouse yes)
     (stored yes)
     (GoodTemp yes)
     (gap yes)
@@ -275,7 +275,7 @@
 ;;Underlay
 (defrule is-not-underlay
     (warranty yes)
-    (acclimated yes)
+    (inHouse yes)
     (stored yes)
     (GoodTemp yes)
     (gap yes)
@@ -287,7 +287,7 @@
 
 (defrule is-underlay
     (warranty yes)
-    (acclimated yes)
+    (inHouse yes)
     (stored yes)
     (GoodTemp yes)
     (gap yes)
