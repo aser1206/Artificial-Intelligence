@@ -255,7 +255,7 @@
     (stored yes)
     (GoodTemp yes)
     (gap yes)
-    (moisture no)
+    (moisture yes)
     =>
     (printout t "Installer Pays." crlf)
 )
@@ -266,7 +266,7 @@
     (stored yes)
     (GoodTemp yes)
     (gap yes)
-    (moisture yes)
+    (moisture no)
     =>
     (printout t "Is there proper underlay?" crlf)
     (assert (underlay (read)))
@@ -279,7 +279,7 @@
     (stored yes)
     (GoodTemp yes)
     (gap yes)
-    (moisture yes)
+    (moisture no)
     (underlay no)
     =>
     (printout t "Installer Pays." crlf)
@@ -291,7 +291,7 @@
     (stored yes)
     (GoodTemp yes)
     (gap yes)
-    (moisture yes)
+    (moisture no)
     (underlay yes)
     =>
     (printout t "Store Pays." crlf)
