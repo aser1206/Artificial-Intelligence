@@ -60,7 +60,7 @@
     (DTemperature Low)
     =>
     (assert (WhoPays CP))
-    (assert (GoodTemp no))
+    (assert (GoodTemp yes))
 )
 
 ;;Cold Temp Medium Change
@@ -69,7 +69,7 @@
     (DTemperature Medium)
     =>
     (assert (WhoPays CP))
-    (assert (GoodTemp no))
+    (assert (GoodTemp yes))
 )
 
 ;;Cold Temp High Change
@@ -87,7 +87,7 @@
     (DTemperature Low)
     =>
     (assert (WhoPays IP))
-    (assert (GoodTemp yes))
+    (assert (GoodTemp no))
 )
 
 ;;Normal Temp Medium Change
@@ -123,7 +123,7 @@
     (DTemperature Medium)
     =>
     (assert (WhoPays SP))
-    (assert (GoodTemp yes))
+    (assert (GoodTemp no))
 )
 
 ;;Hot Temp High Change
@@ -140,12 +140,12 @@
 
 
 ;;Logic Tree
-(defrule has-warranty 
+(defrule has-warranty
     ?i <- (initial-fact)
     =>
     (printout t "Was the floor purchased less than 2 years ago? " crlf)
     (assert (warranty (read)))
-    (retract ?i)  
+    (retract ?i)
 )
 
 ;;Warranty
