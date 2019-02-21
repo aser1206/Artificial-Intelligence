@@ -244,12 +244,12 @@
     (GoodTemp yes)
     (gap yes)
     =>
-    (printout t "Are there between 0-4 units of moisture?" crlf)
+    (printout t "Is there Moisture on the concrete?" crlf)
     (assert (moisture (read)))
 )
 
 ;;Moisture
-(defrule is-moisture
+(defrule has-moisture
     (warranty yes)
     (inHouse yes)
     (stored yes)
@@ -260,7 +260,7 @@
     (printout t "Installer Pays." crlf)
 )
 
-(defrule is-not-moisture
+(defrule has-no-moisture
     (warranty yes)
     (inHouse yes)
     (stored yes)
@@ -273,7 +273,7 @@
 )
 
 ;;Underlay
-(defrule is-not-underlay
+(defrule has-no-underlay
     (warranty yes)
     (inHouse yes)
     (stored yes)
@@ -285,7 +285,7 @@
     (printout t "Installer Pays." crlf)
 )
 
-(defrule is-underlay
+(defrule has-underlay
     (warranty yes)
     (inHouse yes)
     (stored yes)
